@@ -1,0 +1,35 @@
+version: "3"
+
+services:
+  claremarketplace_odoo10:
+    image: "odoo:10.0"
+    container_name: "claremarketplace_odoo"
+    restart: always
+    ports:
+      - "8081:8069"
+    volumes:
+      - claremarketplace_odoo_data:/var/lib/odoo
+#    links:
+#      - in2face_db
+    depends_on:
+      - claremarketplace_db
+    environment:
+      - HOST=claremarketplace_db
+      - USER=odoo
+      - PASSWORD=claremarketplace-easypwd
+
+  claremarketplace_db:
+    image: "postgres:9.4"
+    container_name: "claremarketplace_db"
+    restart: always
+    volumes:
+      - claremarketplace_db_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=odoo
+      - POSTGRES_PASSWORD=claremarketplace-easypwd
+
+volumes:
+  claremarketplace_odoo_data:
+    external: false
+  claremarketplace_db_data:
+    external: false

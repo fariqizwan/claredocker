@@ -1,0 +1,35 @@
+version: "3"
+
+services:
+  uatclare_odoo10:
+    image: "odoo:10.0"
+    container_name: "uatclare_odoo"
+    restart: always
+    ports:
+      - "8080:8069"
+    volumes:
+      - uatclare_odoo_data:/var/lib/odoo
+#    links:
+#      - in2face_db
+    depends_on:
+      - uatclare_db
+    environment:
+      - HOST=uatclare_db
+      - USER=odoo
+      - PASSWORD=uatclare-easypwd
+
+  uatclare_db:
+    image: "postgres:9.4"
+    container_name: "uatclare_db"
+    restart: always
+    volumes:
+      - uatclare_db_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=odoo
+      - POSTGRES_PASSWORD=uatclare-easypwd
+
+volumes:
+  uatclare_odoo_data:
+    external: false
+  uatclare_db_data:
+    external: false
